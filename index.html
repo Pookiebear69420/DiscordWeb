@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Discord Webhook Chat</title>
+  <style>
+    :root {
+      --bg-primary: #36393f;
+      --bg-secondary: #2f3136;
+      --bg-sidebar: #202225;
+      --text-primary: #dcddde;
+      --text-muted: #72767d;
+      --input-bg: #40444b;
+      --input-placeholder: #72767d;
+      --button-bg: #5865f2;
+      --button-hover: #4752c4;
+      --add-button-bg: #3ba55c;
+      --add-button-hover: #2d7d46;
+      --modal-bg: #2f3136;
+      --modal-overlay: rgba(0, 0, 0, 0.6);
+      --active-webhook: #5865f2;
+      --webhook-hover: #393e46;
+      --header-bg: #2f3136;
+      --status-online: #43b581;
+      --console-bg: #1a1a1a;
+      --error-color: #f04747;
+      --delete-button-bg: #da373c;
+      --delete-button-hover: #a5282c;
+      --delete-mode-bg: #f04747;
+      --delete-mode-hover: #c03939;
+      --selected-webhook: #ff5555;
+      --embed-bg: #2f3136;
+      --embed-border: #5865f2;
+      --embed-title: #ffffff;
+      --embed-field-name: #b9bbbe;
+      --embed-field-value: #dcddde;
+      --attachment-bg: #40444b;
+    }
+    [data-theme="light"] {
+      --bg-primary: #ffffff;
+      --bg-secondary: #f2f3f5;
+      --bg-sidebar: #e3e5e8;
+      --text-primary: #060607;
+      --text-muted: #4f5660;
+      --input-bg: #e3e5e8;
+      --input-placeholder: #72767d;
+      --button-bg: #5865f2;
+      --button-hover: #4752c4;
+      --add-button-bg: #3ba55c;
+      --add-button-hover: #2d7d46;
+      --modal-bg: #ffffff;
+      --modal-overlay: rgba(0, 0, 0, 0.3);
+      --active-webhook: #5865f2;
+      --webhook-hover: #d4d7dc;
+      --header-bg: #e3e5e8;
+      --status-online: #43b581;
+      --console-bg: #f2f3f5;
+      --error-color: #d32f2f;
+      --delete-button-bg: #da373c;
+      --delete-button-hover: #a5282c;
+      --delete-mode-bg: #f04747;
+      --delete-mode-hover: #c03939;
+      --selected-webhook: #ff5555;
+      --embed-bg: #f2f3f5;
+      --embed-border: #5865f2;
+      --embed-title: #060607;
+      --embed-field-name: #4f5660;
+      --embed-field-value: #2e3338;
+      --attachment-bg: #e3e5e8;
+    }
+    [data-theme="amoled"] {
+      --bg-primary: #000000;
+      --bg-secondary: #1a1a1a;
+      --bg-sidebar: #111111;
+      --text-primary: #ffffff;
+      --text-muted: #aaaaaa;
+      --input-bg: #222222;
+      --input-placeholder: #666666;
+      --button-bg: #5865f2;
+      --button-hover: #4752c4;
+      --add-button-bg: #3ba55c;
+      --add-button-hover: #2d7d46;
+      --modal-bg: #1a1a1a;
+      --modal-overlay: rgba(0, 0, 0, 0.8);
+      --active-webhook: #5865f2;
+      --webhook-hover: #333333;
+      --header-bg: #0f0f0f;
+      --status-online: #43b581;
+      --console-bg: #0f0f0f;
+      --error-color: #f04747;
+      --delete-button-bg: #da373c;
+      --delete-button-hover: #a5282c;
+      --delete-mode-bg: #f04747;
+      --delete-mode-hover: #c03939;
+      --selected-webhook: #ff5555;
+      --embed-bg: #1a1a1a;
+      --embed-border: #5865f2;
+      --embed-title: #ffffff;
+      --embed-field-name: #aaaaaa;
+      --embed-field-value: #ffffff;
+      --attachment-bg: #222222;
+    }
+    [data-theme="solarized-dark"] {
+      --bg-primary: #002b36;
+      --bg-secondary: #073642;
+      --bg-sidebar: #00212b;
+      --text-primary: #93a1a1;
+      --text-muted: #657b83;
+      --input-bg: #073642;
+      --input-placeholder: #586e75;
+      --button-bg: #268bd2;
+      --button-hover: #2aa198;
+      --add-button-bg: #859900;
+      --add-button-hover: #b58900;
+      --modal-bg: #073642;
+      --modal-overlay: rgba(0, 43, 54, 0.6);
+      --active-webhook: #268bd2;
+      --webhook-hover: #073642;
+      --header-bg: #002b36;
+      --status-online: #2aa198;
+      --console-bg: #00212b;
+      --error-color: #dc322f;
+      --delete-button-bg: #dc322f;
+      --delete-button-hover: #cb4b16;
+      --delete-mode-bg: #dc322f;
+      --delete-mode-hover: #cb4b16;
+      --selected-webhook: #d33682;
+      --embed-bg: #073642;
+      --embed-border: #268bd2;
+      --embed-title: #93a1a1;
+      --embed-field-name: #657b83;
+      --embed-field-value: #93a1a1;
+      --attachment-bg: #073642;
+    }
+    [data-theme="solarized-light"] {
+      --bg-primary: #fdf6e3;
+      --bg-secondary: #eee8d5;
+      --bg-sidebar: #e0dec8;
+      --text-primary: #586e75;
+      --text-muted: #93a1a1;
+      --input-bg: #eee8d5;
+      --input-placeholder: #93a1a1;
+      --button-bg: #268bd2;
+      --button-hover: #2aa198;
+      --add-button-bg: #859900;
+      --add-button-hover: #b58900;
+      --modal-bg: #eee8d5;
+      --modal-overlay: rgba(253, 246, 227, 0.3);
+      --active-webhook: #268bd2;
+      --webhook-hover: #d4d7dc;
+      --header-bg: #fdf6e3;
+      --status-online: #2aa198;
+      --console-bg: #e0dec8;
+      --error-color: #dc322f;
+      --delete-button-bg: #dc322f;
+      --delete-button-hover: #cb4b16;
+      --delete-mode-bg: #dc322f;
+      --delete-mode-hover: #cb4b16;
+      --selected-webhook: #d33682;
+      --embed-bg: #eee8d5;
+      --embed-border: #268bd2;
+      --embed-title: #586e75;
+      --embed-field-name: #93a1a1;
+      --embed-field-value: #586e75;
+      --attachment-bg: #eee8d5;
+    }
+    [data-theme="nord"] {
+      --bg-primary: #2e3440;
+      --bg-secondary: #3b4252;
+      --bg-sidebar: #252932;
+      --text-primary: #eceff4;
+      --text-muted: #d8dee9;
+      --input-bg: #3b4252;
+      --input-placeholder: #81a1c1;
+      --button-bg: #5e81ac;
+      --button-hover: #81a1c1;
+      --add-button-bg: #88c0d0;
+      --add-button-hover: #8fbcbb;
+      --modal-bg: #3b4252;
+      --modal-overlay: rgba(46, 52, 64, 0.6);
+      --active-webhook: #5e81ac;
+      --webhook-hover: #434c5e;
+      --header-bg: #2e3440;
+      --status-online: #88c0d0;
+      --console-bg: #252932;
+      --error-color: #bf616a;
+      --delete-button-bg: #bf616a;
+      --delete-button-hover: #d08770;
+      --delete-mode-bg: #bf616a;
+      --delete-mode-hover: #d08770;
+      --selected-webhook: #ebcb8b;
+      --embed-bg: #3b4252;
+      --embed-border: #5e81ac;
+      --embed-title: #eceff4;
+      --embed-field-name: #d8dee9;
+      --embed-field-value: #eceff4;
+      --attachment-bg: #3b4252;
+    }
+    [data-theme="gruvbox"] {
+      --bg-primary: #282828;
+      --bg-secondary: #3c3836;
+      --bg-sidebar: #1d2021;
+      --text-primary: #ebdbb2;
+      --text-muted: #a89984;
+      --input-bg: #3c3836;
+      --input-placeholder: #928374;
+      --button-bg: #d79921;
+      --button-hover: #fabd2f;
+      --add-button-bg: #98971a;
+      --add-button-hover: #b8bb26;
+      --moda
+l-bg: #3c3836;
+      --modal-overlay: rgba(40, 40, 40, 0.6);
+      --active-webhook: #d79921;
+      --webhook-hover: #504945;
+      --header-bg: #282828;
+      --status-online: #b8bb26;
+      --console-bg: #1d2021;
+      --error-color: #cc241d;
+      --delete-button-bg: #cc241d;
+      --delete-button-hover: #fb4934;
+      --delete-mode-bg: #cc241d;
+      --delete-mode-hover: #fb4934;
+      --selected-webhook: #d65d0e;
+      --embed-bg: #3c3836;
+      --embed-border: #d79921;
+      --embed-title: #ebdbb2;
+      --embed-field-name: #a89984;
+      --embed-field-value: #ebdbb2;
+      --attachment-bg: #3c3836;
+    }
+    body {
+      font-family: 'Whitney', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      margin: 0;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      background-color: var(--bg-primary);
+    }
+    .console {
+      background-color: var(--console-bg);
+      padding: 10px;
+      font-size: 12px;
+      color: var(--text-muted);
+      overflow-y: auto;
+      max-height: 100px;
+      border-bottom: 1px solid #2c2f33;
+      transition: max-height 0.3s ease;
+    }
+    .console.collapsed {
+      max-height: 20px;
+      overflow: hidden;
+    }
+    .console-toggle {
+      position: absolute;
+      top: 5px;
+      right: 80px;
+      background-color: var(--button-bg);
+      color: #ffffff;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .console-toggle:hover {
+      background-color: var(--button-hover);
+    }
+    .header {
+      background-color: var(--header-bg);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #2c2f33;
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+    }
+    .header .server-name {
+      font-size: 16px;
+      font-weight: 600;
+      margin-right: 10px;
+    }
+    .header .channel-name {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    .header .status-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--status-online);
+      border-radius: 50%;
+      margin-left: 5px;
+    }
+    .chat-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      overflow: hidden;
+    }
+    .chat-log {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      scroll-behavior: smooth;
+    }
+    .message {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      max-width: 70%;
+    }
+    .message img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+    .message-content {
+      display: flex;
+      flex-direction: column;
+    }
+    .message-header {
+      display: flex;
+      gap: 8px;
+      align-items: baseline;
+    }
+    .message-username {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .message-timestamp {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .message-text {
+      font-size: 16px;
+      color: var(--text-primary);
+      word-wrap: break-word;
+    }
+    .message-embed {
+      background-color: var(--embed-bg);
+      border-left: 4px solid var(--embed-border);
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 4px;
+      max-width: 500px;
+    }
+    .embed-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--embed-title);
+      margin-bottom: 8px;
+    }
+    .embed-description {
+      font-size: 14px;
+      color: var(--embed-field-value);
+      margin-bottom: 8px;
+    }
+    .embed-field {
+      margin-bottom: 8px;
+    }
+    .embed-field-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--embed-field-name);
+    }
+    .embed-field-value {
+      font-size: 14px;
+      color: var(--embed-field-value);
+    }
+    .embed-image, .attachment img {
+      max-width: 100%;
+      border-radius: 4px;
+      margin-top: 8px;
+      cursor: pointer;
+    }
+    .embed-thumbnail {
+      max-width: 80px;
+      max-height: 80px;
+      border-radius: 4px;
+      float: right;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+    .message-attachments {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .attachment {
+      background-color: var(--attachment-bg);
+      padding: 8px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .attachment img, .attachment video {
+      max-width: 300px;
+      max-height: 200px;
+      border-radius: 4px;
+    }
+    .attachment a {
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .attachment a:hover {
+      text-decoration: underline;
+    }
+    .input-area {
+      display: flex;
+      gap: 10px;
+      padding-top: 10px;
+      min-height: 60px;
+      margin-top: auto;
+    }
+    textarea {
+      flex: 1;
+      min-height: 44px;
+      max-height: 144px;
+      resize: none;
+      font-size: 16px;
+      padding: 10px;
+      border-radius: 8px;
+      background-color: var(--input-bg);
+      color: var(--text-primary);
+      border: none;
+      outline: none;
+      box-sizing: border-box;
+    }
+    textarea::placeholder {
+      color: var(--input-placeholder);
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: var(--button-bg);
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    button:hover {
+      background-color: var(--button-hover);
+    }
+    .status {
+      margin-top: 10px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    .modal-status {
+      margin-top: 10px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    .modal-status.error {
+      color: var(--error-color);
+    }
+    .sidebar {
+      width: 72px;
+      background-color: var(--bg-sidebar);
+      padding: 12px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      border-right: 1px solid #2c2f33;
+    }
+    .webhook-item {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-radius 0.2s, background-color 0.2s, border 0.2s;
+      position: relative;
+    }
+    .webhook-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .webhook-item:hover {
+      border-radius: 15px;
+      background-color: var(--webhook-hover);
+    }
+    .webhook-item.active::after {
+      content: '';
+      position: absolute;
+      left: -4px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 8px;
+      height: 20px;
+      background-color: var(--active-webhook);
+      border-radius: 0 4px 4px 0;
+    }
+    .webhook-item.selected {
+      border: 2px solid var(--selected-webhook);
+      border-radius: 15px;
+    }
+    .add-webhook, .delete-mode, .delete-selected, .settings-button {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      cursor: pointer;
+      transition: border-radius 0.2s, background-color 0.2s;
+    }
+    .add-webhook {
+      background-color: var(--add-button-bg);
+      color: #ffffff;
+    }
+    .add-webhook:hover {
+      border-radius: 15px;
+      background-color: var(--add-button-hover);
+    }
+    .delete-mode {
+      background-color: var(--delete-mode-bg);
+      color: #ffffff;
+    }
+    .delete-mode:hover {
+      border-radius: 15px;
+      background-color: var(--delete-mode-hover);
+    }
+    .delete-selected {
+      background-color: var(--delete-button-bg);
+      color: #ffffff;
+      display: none;
+    }
+    .delete-selected:hover {
+      border-radius: 15px;
+      background-color: var(--delete-button-hover);
+    }
+    .settings-button {
+      background-color: var(--button-bg);
+      color: #ffffff;
+    }
+    .settings-button:hover {
+      border-radius: 15px;
+      background-color: var(--button-hover);
+    }
+    .modal, .image-modal, .settings-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--modal-overlay);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal-content, .settings-modal-content {
+      background-color: var(--modal-bg);
+      padding: 30px;
+      border-radius: 8px;
+      width: 500px;
+      max-width: 90%;
+      color: var(--text-primary);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+    .image-modal-content {
+      background-color: transparent;
+      position: relative;
+      width: 70%;
+      max-width: 70%;
+      max-height: 90%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .image-modal-content img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 8px;
+      object-fit: contain;
+    }
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: #ffffff;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .close-button:hover {
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+    .modal-content input, .settings-modal-content select {
+      width: 100%;
+      padding: 12px;
+      margin: 15px 0;
+      border-radius: 4px;
+      background-color: var(--input-bg);
+      color: var(--text-primary);
+      border: none;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    .modal-buttons, .settings-modal-buttons {
+      display: flex;
+      gap: 10px;
+    }
+    .modal-buttons button, .settings-modal-buttons button {
+      flex: 1;
+      padding: 12px;
+      font-size: 16px;
+    }
+    h2 {
+      font-size: 20px;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+    }
+    .settings-section {
+      margin-bottom: 20px;
+    }
+    .settings-section label {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 10px;
+      color: var(--text-primary);
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar" id="sidebar">
+    <div class="add-webhook" onclick="showAddWebhookModal()">+</div>
+    <div class="delete-mode" onclick="toggleDeleteMode()">🗑️</div>
+    <div class="delete-selected" id="deleteSelectedButton" onclick="deleteSelectedWebhooks()">✔️</div>
+    <div class="settings-button" onclick="showSettingsModal()">⚙️</div>
+  </div>
+  <div class="container">
+    <div class="console" id="console"></div>
+    <button class="console-toggle" onclick="toggleConsole()">Toggle Console</button>
+    <div class="header">
+      <span class="server-name">Webhook Chat</span>
+      <span class="channel-name">#mod-chat</span>
+      <span class="status-dot"></span>
+    </div>
+    <div class="chat-area">
+      <div class="chat-log" id="chatLog"></div>
+      <div class="input-area">
+        <textarea id="message" placeholder="Type a message..."></textarea>
+        <button onclick="sendMessage()">Send</button>
+      </div>
+      <div class="status" id="status"></div>
+    </div>
+  </div>
+  <div class="modal" id="addWebhookModal">
+    <div class="modal-content">
+      <h2>Add a Webhook</h2>
+      <input type="text" id="webhookUrlInput" placeholder="Enter Discord Webhook URL (e.g., https://discord.com/api/webhooks/...)">
+      <div class="modal-status" id="modalStatus"></div>
+      <div class="modal-buttons">
+        <button onclick="addWebhook()">Add Webhook</button>
+        <button onclick="hideAddWebhookModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+  <div class="image-modal" id="imageModal">
+    <div class="image-modal-content">
+      <img id="enlargedImage" src="" alt="Enlarged Image">
+      <button class="close-button" onclick="hideImageModal()">×</button>
+    </div>
+  </div>
+  <div class="settings-modal" id="settingsModal">
+    <div class="settings-modal-content">
+      <h2>Settings</h2>
+      <div class="settings-section">
+        <label for="themeSelect">Theme</label>
+        <select id="themeSelect" onchange="changeTheme()">
+          <option value="dark">Dark</option>
+          <option value="light">Light</option>
+          <option value="amoled">AMOLED</option>
+          <option value="solarized-dark">Solarized Dark</option>
+          <option value="solarized-light">Solarized Light</option>
+          <option value="nord">Nord</option>
+          <option value="gruvbox">Gruvbox</option>
+        </select>
+      </div>
+      <div class="settings-section">
+        <label>Notifications (Coming Soon)</label>
+        <input type="checkbox" disabled>
+      </div>
+      <div class="settings-modal-buttons">
+        <button onclick="hideSettingsModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let webhooks = [];
+    let activeWebhook = null;
+    let switchCooldown = false;
+    let pollingInterval = null;
+    let deleteMode = false;
+    let selectedWebhooks = new Set();
+    const consoleElement = document.getElementById('console');
+    const chatLog = document.getElementById('chatLog');
+    const BACKEND_URL = 'http://localhost:3000';
+
+    function log(message) {
+      consoleElement.innerHTML += `<div>${new Date().toLocaleTimeString()} - ${message}</div>`;
+      consoleElement.scrollTop = consoleElement.scrollHeight;
+    }
+
+    function toggleConsole() {
+      consoleElement.classList.toggle('collapsed');
+      log('Console toggled.');
+    }
+
+    async function loadWebhooks() {
+      try {
+        const storedWebhooks = localStorage.getItem('webhooks');
+        if (storedWebhooks) {
+          const webhookUrls = JSON.parse(storedWebhooks);
+          webhooks = [];
+          for (const url of webhookUrls) {
+            try {
+              const response = await fetch(`${BACKEND_URL}/add-webhook`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url })
+              });
+              if (response.ok) {
+                const webhook = await response.json();
+                webhooks.push(webhook);
+              } else {
+                log(`Failed to reload webhook: ${url}`);
+              }
+            } catch (error) {
+              log(`Error reloading webhook ${url}: ${error.message}`);
+            }
+          }
+        }
+
+        const activeWebhookId = localStorage.getItem('activeWebhookId');
+        if (activeWebhookId) {
+          activeWebhook = webhooks.find(w => w.id === activeWebhookId) || null;
+        }
+        renderWebhooks();
+        if (activeWebhook) {
+          startPollingMessages();
+          updateHeader();
+        }
+        log('Webhooks loaded successfully.');
+      } catch (error) {
+        log(`Error loading webhooks: ${error.message}`);
+      }
+    }
+
+    function saveWebhooks() {
+      const webhookUrls = webhooks.map(w => w.url);
+      localStorage.setItem('webhooks', JSON.stringify(webhookUrls));
+    }
+
+    function saveActiveWebhook() {
+      if (activeWebhook) {
+        localStorage.setItem('activeWebhookId', activeWebhook.id);
+      } else {
+        localStorage.removeItem('activeWebhookId');
+      }
+    }
+
+    function loadTheme() {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      document.body.setAttribute('data-theme', savedTheme);
+      document.getElementById('themeSelect').value = savedTheme;
+      log('Theme loaded: ' + savedTheme);
+    }
+
+    function changeTheme() {
+      const theme = document.getElementById('themeSelect').value;
+      document.body.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      log('Theme changed to: ' + theme);
+    }
+
+    function showAddWebhookModal() {
+      document.getElementById('addWebhookModal').style.display = 'flex';
+      document.getElementById('webhookUrlInput').value = '';
+      document.getElementById('modalStatus').textContent = '';
+      document.getElementById('modalStatus').classList.remove('error');
+      log('Add Webhook modal opened.');
+    }
+
+    function hideAddWebhookModal() {
+      document.getElementById('addWebhookModal').style.display = 'none';
+      document.getElementById('webhookUrlInput').value = '';
+      document.getElementById('modalStatus').textContent = '';
+      document.getElementById('modalStatus').classList.remove('error');
+      log('Add Webhook modal closed.');
+    }
+
+    function showSettingsModal() {
+      document.getElementById('settingsModal').style.display = 'flex';
+      log('Settings modal opened.');
+    }
+
+    function hideSettingsModal() {
+      document.getElementById('settingsModal').style.display = 'none';
+      log('Settings modal closed.');
+    }
+
+    function showImageModal(imageSrc) {
+      const modal = document.getElementById('imageModal');
+      const enlargedImage = document.getElementById('enlargedImage');
+      enlargedImage.src = imageSrc;
+      modal.style.display = 'flex';
+      log('Image modal opened for: ' + imageSrc);
+    }
+
+    function hideImageModal() {
+      const modal = document.getElementById('imageModal');
+      modal.style.display = 'none';
+      document.getElementById('enlargedImage').src = '';
+      log('Image modal closed.');
+    }
+
+    async function addWebhook() {
+      const url = document.getElementById('webhookUrlInput').value.trim();
+      const modalStatus = document.getElementById('modalStatus');
+
+      if (!url) {
+        modalStatus.textContent = '❌ Webhook URL cannot be empty.';
+        modalStatus.classList.add('error');
+        log('Webhook URL is empty.');
+        return;
+      }
+
+      if (!url.startsWith('https://discord.com/api/webhooks/')) {
+        modalStatus.textContent = '❌ Invalid webhook URL. It must start with https://discord.com/api/webhooks/';
+        modalStatus.classList.add('error');
+        log('Invalid webhook URL: ' + url);
+        return;
+      }
+
+      if (webhooks.some(webhook => webhook.url === url)) {
+        modalStatus.textContent = '❌ This webhook URL is already added.';
+        modalStatus.classList.add('error');
+        log('Duplicate webhook URL: ' + url);
+        return;
+      }
+
+      modalStatus.textContent = 'Adding webhook...';
+      try {
+        const response = await fetch(`${BACKEND_URL}/add-webhook`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ url })
+        });
+
+        if (!response.ok) {
+          const error = await response.json();
+          modalStatus.textContent = `❌ Failed to add webhook: ${error.error}`;
+          modalStatus.classList.add('error');
+          log(`Failed to add webhook: ${error.error}`);
+          return;
+        }
+
+        const webhook = await response.json();
+        webhooks.push(webhook);
+        saveWebhooks();
+        renderWebhooks();
+        if (!activeWebhook) {
+          setActiveWebhook(webhook);
+        }
+        modalStatus.textContent = '✅ Webhook added successfully!';
+        log('Webhook added: ' + webhook.name);
+        setTimeout(hideAddWebhookModal, 1000);
+      } catch (error) {
+        modalStatus.textContent = `❌ Error adding webhook: ${error.message}`;
+        modalStatus.classList.add('error');
+        log(`Error adding webhook: ${error.message} - URL: ${url}`);
+      }
+    }
+
+    function toggleDeleteMode() {
+      deleteMode = !deleteMode;
+      selectedWebhooks.clear();
+      renderWebhooks();
+      const deleteButton = document.getElementById('deleteSelectedButton');
+      deleteButton.style.display = deleteMode ? 'flex' : 'none';
+      log(`Delete mode ${deleteMode ? 'enabled' : 'disabled'}.`);
+    }
+
+    function renderWebhooks() {
+      const sidebar = document.getElementById('sidebar');
+      const addButton = sidebar.querySelector('.add-webhook');
+      const deleteModeButton = sidebar.querySelector('.delete-mode');
+      const deleteSelectedButton = sidebar.querySelector('.delete-selected');
+      const settingsButton = sidebar.querySelector('.settings-button');
+      sidebar.innerHTML = '';
+      sidebar.appendChild(addButton);
+      sidebar.appendChild(deleteModeButton);
+      sidebar.appendChild(deleteSelectedButton);
+      sidebar.appendChild(settingsButton);
+
+      webhooks.forEach(webhook => {
+        const item = document.createElement('div');
+        item.className = `webhook-item ${activeWebhook && activeWebhook.id === webhook.id ? 'active' : ''} ${selectedWebhooks.has(webhook.id) ? 'selected' : ''}`;
+        item.innerHTML = `<img src="${webhook.avatar}" alt="${webhook.name}" title="${webhook.name}">`;
+        item.addEventListener('click', () => {
+          if (deleteMode) {
+            if (selectedWebhooks.has(webhook.id)) {
+              selectedWebhooks.delete(webhook.id);
+            } else {
+              selectedWebhooks.add(webhook.id);
+            }
+            renderWebhooks();
+            log(`Webhook ${webhook.name} ${selectedWebhooks.has(webhook.id) ? 'selected' : 'deselected'} for deletion.`);
+          } else {
+            setActiveWebhook(webhook);
+          }
+        });
+        if (!deleteMode) {
+          item.addEventListener('dblclick', () => {
+            log('Double-click detected on webhook: ' + webhook.name);
+            deleteWebhook(webhook);
+          });
+        }
+        sidebar.appendChild(item);
+      });
+      log('Webhooks rendered: ' + webhooks.length);
+    }
+
+    async function deleteSelectedWebhooks() {
+      if (selectedWebhooks.size === 0) {
+        log('No webhooks selected for deletion.');
+        return;
+      }
+
+      try {
+        const deletePromises = Array.from(selectedWebhooks).map(async (id) => {
+          const response = await fetch(`${BACKEND_URL}/webhook/${id}`, {
+            method: 'DELETE'
+          });
+          if (!response.ok) {
+            throw new Error(`Failed to delete webhook ${id}`);
+          }
+        });
+
+        await Promise.all(deletePromises);
+
+        const deletedWebhookNames = webhooks
+          .filter(w => selectedWebhooks.has(w.id))
+          .map(w => w.name)
+          .join(', ');
+
+        webhooks = webhooks.filter(w => !selectedWebhooks.has(w.id));
+        if (activeWebhook && selectedWebhooks.has(activeWebhook.id)) {
+          activeWebhook = null;
+          document.getElementById('chatLog').innerHTML = '';
+          if (pollingInterval) {
+            clearInterval(pollingInterval);
+          }
+          updateHeader();
+        }
+        selectedWebhooks.clear();
+        saveWebhooks();
+        saveActiveWebhook();
+        renderWebhooks();
+        toggleDeleteMode();
+        document.getElementById('status').textContent = `✅ Webhooks deleted: ${deletedWebhookNames}`;
+        log(`Webhooks deleted: ${deletedWebhookNames}`);
+      } catch (error) {
+        log(`Error deleting selected webhooks: ${error.message}`);
+        document.getElementById('status').textContent = `❌ Error deleting webhooks: ${error.message}`;
+      }
+    }
+
+    function setActiveWebhook(webhook) {
+      if (switchCooldown) {
+        log('Webhook switch on cooldown, please wait.');
+        return;
+      }
+      switchCooldown = true;
+      setTimeout(() => { switchCooldown = false; }, 1000);
+
+      activeWebhook = webhook;
+      renderWebhooks();
+      saveActiveWebhook();
+      document.getElementById('chatLog').innerHTML = '';
+      startPollingMessages();
+      updateHeader();
+      document.getElementById('status').textContent = `✅ Switched to webhook: ${webhook.name}`;
+      log('Switched to webhook: ' + webhook.name);
+    }
+
+    async function deleteWebhook(webhook) {
+      log('Attempting to delete webhook: ' + webhook.name);
+      if (confirm(`Are you sure you want to delete the webhook for ${webhook.name}?`)) {
+        try {
+          const response = await fetch(`${BACKEND_URL}/webhook/${webhook.id}`, {
+            method: 'DELETE'
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to delete webhook');
+          }
+
+          webhooks = webhooks.filter(w => w.id !== webhook.id);
+          if (activeWebhook && activeWebhook.id === webhook.id) {
+            activeWebhook = null;
+            document.getElementById('chatLog').innerHTML = '';
+            if (pollingInterval) {
+              clearInterval(pollingInterval);
+            }
+            updateHeader();
+          }
+          saveWebhooks();
+          saveActiveWebhook();
+          renderWebhooks();
+          document.getElementById('status').textContent = `✅ Webhook for ${webhook.name} deleted.`;
+          log('Webhook deleted: ' + webhook.name);
+        } catch (error) {
+          log(`Error deleting webhook: ${error.message}`);
+          document.getElementById('status').textContent = `❌ Error deleting webhook: ${error.message}`;
+        }
+      } else {
+        log('Webhook deletion canceled: ' + webhook.name);
+      }
+    }
+
+    async function sendMessage() {
+      const message = document.getId('message').value;
+      const status = document.getElementById('status');
+
+      if (!activeWebhook) {
+        status.textContent = '❌ No webhook selected.';
+        log('No webhook selected for sending message.');
+        return;
+      }
+
+      if (message.length === 0) {
+        status.textContent = '❌ Message cannot be empty.';
+        log('Empty message attempted.');
+        return;
+      }
+      if (message.length > 2000) {
+        status.textContent = '❌ Message is too long. Max 2000 characters.';
+        log('Message too long: ' + message.length + ' characters.');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${BACKEND_URL}/send-message`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            webhookId: activeWebhook.id,
+            content: message
+          })
+        });
+
+        if (!response.ok) {
+          const error = await response.json();
+          status.textContent = `❌ Failed to send message: ${error.error}`;
+          log(`Failed to send message: ${error.error}`);
+          return;
+        }
+
+        status.textContent = '✅ Message sent successfully!';
+        document.getElementById('message').value = '';
+        log('Message sent successfully.');
+        fetchMessages();
+      } catch (error) {
+        status.textContent = `❌ Error sending message: ${error.message}`;
+        log(`Error sending message: ${error.message}`);
+      }
+    }
+
+    function startPollingMessages() {
+      if (pollingInterval) {
+        clearInterval(pollingInterval);
+      }
+      if (!activeWebhook) {
+        log('Polling not started: No active webhook.');
+        return;
+      }
+      pollingInterval = setInterval(fetchMessages, 5000);
+      fetchMessages();
+      log('Started polling messages for webhook: ' + activeWebhook.name);
+    }
+
+    async function fetchMessages() {
+      if (!activeWebhook) {
+        log('Cannot fetch messages: No active webhook.');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${BACKEND_URL}/messages/${activeWebhook.channelId}`);
+        if (!response.ok) {
+          const error = await response.json();
+          document.getElementById('status').textContent = `❌ Failed to fetch messages: ${error.error}`;
+          log(`Failed to fetch messages: ${error.error}`);
+          return;
+        }
+
+        const messages = await response.json();
+        if (messages.length === 0) {
+          log('No new messages fetched.');
+          return;
+        }
+
+        const chatLog = document.getElementById('chatLog');
+        const atBottom = chatLog.scrollHeight - chatLog.scrollTop === chatLog.clientHeight;
+
+        chatLog.innerHTML = '';
+        messages.reverse().forEach(message => {
+          const messageElement = document.createElement('div');
+          messageElement.className = 'message';
+          const timestamp = new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+          let embedHtml = '';
+          if (message.embeds && message.embeds.length > 0) {
+            message.embeds.forEach(embed => {
+              embedHtml += '<div class="message-embed">';
+              if (embed.title) {
+                embedHtml += `<div class="embed-title">${embed.title}</div>`;
+              }
+              if (embed.description) {
+                embedHtml += `<div class="embed-description">${embed.description}</div>`;
+              }
+              if (embed.fields && embed.fields.length > 0) {
+                embed.fields.forEach(field => {
+                  embedHtml += `
+                    <div class="embed-field">
+                      <div class="embed-field-name">${field.name}</div>
+                      <div class="embed-field-value">${field.value}</div>
+                    </div>
+                  `;
+                });
+              }
+              if (embed.thumbnail && embed.thumbnail.url) {
+                embedHtml += `<img src="${embed.thumbnail.url}" class="embed-thumbnail" onclick="showImageModal('${embed.thumbnail.url}')">`;
+              }
+              if (embed.image && embed.image.url) {
+                embedHtml += `<img src="${embed.image.url}" class="embed-image" onclick="showImageModal('${embed.image.url}')">`;
+              }
+              embedHtml += '</div>';
+            });
+          }
+
+          let attachmentsHtml = '';
+          if (message.attachments && message.attachments.length > 0) {
+            attachmentsHtml = '<div class="message-attachments">';
+            message.attachments.forEach(attachment => {
+              if (attachment.contentType.startsWith('image/')) {
+                attachmentsHtml += `
+                  <div class="attachment">
+                    <img src="${attachment.url}" alt="${attachment.filename}" onclick="showImageModal('${attachment.url}')">
+                  </div>
+                `;
+              } else if (attachment.contentType.startsWith('video/')) {
+                attachmentsHtml += `
+                  <div class="attachment">
+                    <video controls src="${attachment.url}" alt="${attachment.filename}"></video>
+                  </div>
+                `;
+              } else {
+                attachmentsHtml += `
+                  <div class="attachment">
+                    <a href="${attachment.url}" target="_blank">${attachment.filename}</a>
+                  </div>
+                `;
+              }
+            });
+            attachmentsHtml += '</div>';
+          }
+
+          messageElement.innerHTML = `
+            <img src="${message.author.avatar}" alt="${message.author.username}">
+            <div class="message-content">
+              <div class="message-header">
+                <span class="message-username">${message.author.username}</span>
+                <span class="message-timestamp">${timestamp}</span>
+              </div>
+              <div class="message-text">${message.content}</div>
+              ${embedHtml}
+              ${attachmentsHtml}
+            </div>
+          `;
+          chatLog.appendChild(messageElement);
+        });
+
+        if (atBottom) {
+          chatLog.scrollTop = chatLog.scrollHeight;
+        }
+
+        log(`Fetched ${messages.length} messages.`);
+      } catch (error) {
+        document.getElementById('status').textContent = `❌ Error fetching messages: ${error.message}`;
+        log(`Error fetching messages: ${error.message}`);
+      }
+    }
+
+    function updateHeader() {
+      const header = document.querySelector('.header .channel-name');
+      if (activeWebhook) {
+        header.textContent = `#${activeWebhook.name || 'unnamed'}-chat`;
+      } else {
+        header.textContent = '#mod-chat';
+      }
+      log('Header updated: ' + header.textContent);
+    }
+
+    loadWebhooks();
+    loadTheme();
+  </script>
+</body>
+</html>
