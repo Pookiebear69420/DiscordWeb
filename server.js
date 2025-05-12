@@ -8,6 +8,7 @@ const FormData = require('form-data');
 const rateLimit = require('express-rate-limit');
 const https = require('https');
 const fs = require('fs');
+const path = require('path');
 
 // Use dynamic import for node-fetch
 let fetch;
@@ -19,6 +20,14 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+// Serve static files (e.g., index.html, DCN.mp3) from the root directory
+app.use(express.static(__dirname));
+
+// Serve index.html at the root route
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 // Rate limiting middleware
 const limiter = rateLimit({
@@ -150,7 +159,7 @@ app.post('/send-message', upload.single('file'), async (req, res) => {
       method: 'POST',
       body: formData,
       headers: formData.getHeaders(),
-      timeout: 10000 // Add timeout for message sendingisinin
+      timeout: 10000 // Add timeout for message sending
     });
 
     if (!response.ok) {
@@ -202,7 +211,7 @@ app.get('/messages/:channelId', async (req, res) => {
       return res.status(403).json({ error: 'Bot lacks permissions to view channel or read message history' });
     }
 
-    const messages = await channel.messages.fetch({ limit: 50 });
+    const messages = await channel.messages.fetch({ limit: 200 });
     const formattedMessages = messages.map(msg => ({
       id: msg.id,
       content: msg.content,
