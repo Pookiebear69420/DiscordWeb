@@ -11,6 +11,7 @@
       --text-primary: #dcddde;
       --text-muted: #72767d;
       --input-bg: #40444b;
+      --input-border: #2c2f33;
       --input-placeholder: #72767d;
       --button-bg: #5865f2;
       --button-hover: #4752c4;
@@ -35,6 +36,14 @@
       --embed-field-name: #b9bbbe;
       --embed-field-value: #dcddde;
       --attachment-bg: #40444b;
+      --file-preview-bg: #40444b;
+      --file-preview-border: #5865f2;
+      --file-upload-button-bg: #5865f2;
+      --file-upload-button-hover: #4752c4;
+      --toggle-bg: #40444b;
+      --toggle-bg-checked: #43b581;
+      --toggle-thumb: #ffffff;
+      --toggle-thumb-checked: #ffffff;
     }
     [data-theme="light"] {
       --bg-primary: #ffffff;
@@ -43,6 +52,7 @@
       --text-primary: #060607;
       --text-muted: #4f5660;
       --input-bg: #e3e5e8;
+      --input-border: #d4d7dc;
       --input-placeholder: #72767d;
       --button-bg: #5865f2;
       --button-hover: #4752c4;
@@ -67,6 +77,14 @@
       --embed-field-name: #4f5660;
       --embed-field-value: #2e3338;
       --attachment-bg: #e3e5e8;
+      --file-preview-bg: #e3e5e8;
+      --file-preview-border: #5865f2;
+      --file-upload-button-bg: #5865f2;
+      --file-upload-button-hover: #4752c4;
+      --toggle-bg: #d4d7dc;
+      --toggle-bg-checked: #43b581;
+      --toggle-thumb: #ffffff;
+      --toggle-thumb-checked: #ffffff;
     }
     [data-theme="amoled"] {
       --bg-primary: #000000;
@@ -75,6 +93,7 @@
       --text-primary: #ffffff;
       --text-muted: #aaaaaa;
       --input-bg: #222222;
+      --input-border: #333333;
       --input-placeholder: #666666;
       --button-bg: #5865f2;
       --button-hover: #4752c4;
@@ -99,6 +118,14 @@
       --embed-field-name: #aaaaaa;
       --embed-field-value: #ffffff;
       --attachment-bg: #222222;
+      --file-preview-bg: #222222;
+      --file-preview-border: #5865f2;
+      --file-upload-button-bg: #5865f2;
+      --file-upload-button-hover: #4752c4;
+      --toggle-bg: #333333;
+      --toggle-bg-checked: #43b581;
+      --toggle-thumb: #ffffff;
+      --toggle-thumb-checked: #ffffff;
     }
     [data-theme="solarized-dark"] {
       --bg-primary: #002b36;
@@ -107,6 +134,7 @@
       --text-primary: #93a1a1;
       --text-muted: #657b83;
       --input-bg: #073642;
+      --input-border: #002b36;
       --input-placeholder: #586e75;
       --button-bg: #268bd2;
       --button-hover: #2aa198;
@@ -131,6 +159,14 @@
       --embed-field-name: #657b83;
       --embed-field-value: #93a1a1;
       --attachment-bg: #073642;
+      --file-preview-bg: #073642;
+      --file-preview-border: #268bd2;
+      --file-upload-button-bg: #268bd2;
+      --file-upload-button-hover: #2aa198;
+      --toggle-bg: #073642;
+      --toggle-bg-checked: #2aa198;
+      --toggle-thumb: #93a1a1;
+      --toggle-thumb-checked: #93a1a1;
     }
     [data-theme="solarized-light"] {
       --bg-primary: #fdf6e3;
@@ -139,6 +175,7 @@
       --text-primary: #586e75;
       --text-muted: #93a1a1;
       --input-bg: #eee8d5;
+      --input-border: #d4d7dc;
       --input-placeholder: #93a1a1;
       --button-bg: #268bd2;
       --button-hover: #2aa198;
@@ -163,6 +200,14 @@
       --embed-field-name: #93a1a1;
       --embed-field-value: #586e75;
       --attachment-bg: #eee8d5;
+      --file-preview-bg: #eee8d5;
+      --file-preview-border: #268bd2;
+      --file-upload-button-bg: #268bd2;
+      --file-upload-button-hover: #2aa198;
+      --toggle-bg: #d4d7dc;
+      --toggle-bg-checked: #2aa198;
+      --toggle-thumb: #586e75;
+      --toggle-thumb-checked: #586e75;
     }
     [data-theme="nord"] {
       --bg-primary: #2e3440;
@@ -171,6 +216,7 @@
       --text-primary: #eceff4;
       --text-muted: #d8dee9;
       --input-bg: #3b4252;
+      --input-border: #434c5e;
       --input-placeholder: #81a1c1;
       --button-bg: #5e81ac;
       --button-hover: #81a1c1;
@@ -195,6 +241,14 @@
       --embed-field-name: #d8dee9;
       --embed-field-value: #eceff4;
       --attachment-bg: #3b4252;
+      --file-preview-bg: #3b4252;
+      --file-preview-border: #5e81ac;
+      --file-upload-button-bg: #5e81ac;
+      --file-upload-button-hover: #81a1c1;
+      --toggle-bg: #434c5e;
+      --toggle-bg-checked: #88c0d0;
+      --toggle-thumb: #eceff4;
+      --toggle-thumb-checked: #eceff4;
     }
     [data-theme="gruvbox"] {
       --bg-primary: #282828;
@@ -203,13 +257,13 @@
       --text-primary: #ebdbb2;
       --text-muted: #a89984;
       --input-bg: #3c3836;
+      --input-border: #504945;
       --input-placeholder: #928374;
       --button-bg: #d79921;
       --button-hover: #fabd2f;
       --add-button-bg: #98971a;
       --add-button-hover: #b8bb26;
-      --moda
-l-bg: #3c3836;
+      --modal-bg: #3c3836;
       --modal-overlay: rgba(40, 40, 40, 0.6);
       --active-webhook: #d79921;
       --webhook-hover: #504945;
@@ -228,6 +282,14 @@ l-bg: #3c3836;
       --embed-field-name: #a89984;
       --embed-field-value: #ebdbb2;
       --attachment-bg: #3c3836;
+      --file-preview-bg: #3c3836;
+      --file-preview-border: #d79921;
+      --file-upload-button-bg: #d79921;
+      --file-upload-button-hover: #fabd2f;
+      --toggle-bg: #504945;
+      --toggle-bg-checked: #b8bb26;
+      --toggle-thumb: #ebdbb2;
+      --toggle-thumb-checked: #ebdbb2;
     }
     body {
       font-family: 'Whitney', 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -247,12 +309,12 @@ l-bg: #3c3836;
     }
     .console {
       background-color: var(--console-bg);
-      padding: 10px;
+      padding: 8px;
       font-size: 12px;
       color: var(--text-muted);
       overflow-y: auto;
       max-height: 100px;
-      border-bottom: 1px solid #2c2f33;
+      border-bottom: 1px solid var(--input-border);
       transition: max-height 0.3s ease;
     }
     .console.collapsed {
@@ -265,26 +327,27 @@ l-bg: #3c3836;
       right: 80px;
       background-color: var(--button-bg);
       color: #ffffff;
-      padding: 5px 10px;
+      padding: 4px 8px;
       border-radius: 4px;
       cursor: pointer;
       font-size: 12px;
+      transition: background-color 0.2s;
     }
     .console-toggle:hover {
       background-color: var(--button-hover);
     }
     .header {
       background-color: var(--header-bg);
-      padding: 10px 20px;
+      padding: 8px 16px;
       display: flex;
       align-items: center;
-      border-bottom: 1px solid #2c2f33;
-      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+      border-bottom: 1px solid var(--input-border);
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
     }
     .header .server-name {
       font-size: 16px;
       font-weight: 600;
-      margin-right: 10px;
+      margin-right: 8px;
     }
     .header .channel-name {
       font-size: 14px;
@@ -294,34 +357,34 @@ l-bg: #3c3836;
       width: 8px;
       height: 8px;
       background-color: var(--status-online);
+      margin-left: 4px;
       border-radius: 50%;
-      margin-left: 5px;
     }
     .chat-area {
       flex: 1;
       display: flex;
       flex-direction: column;
-      padding: 20px;
+      padding: 16px;
       overflow: hidden;
     }
     .chat-log {
       flex: 1;
       overflow-y: auto;
-      padding: 10px 0;
+      padding: 8px 0;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
       scroll-behavior: smooth;
     }
     .message {
       display: flex;
       align-items: flex-start;
-      gap: 10px;
+      gap: 8px;
       max-width: 70%;
     }
     .message img {
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
     }
     .message-content {
@@ -330,158 +393,230 @@ l-bg: #3c3836;
     }
     .message-header {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       align-items: baseline;
     }
     .message-username {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 600;
       color: var(--text-primary);
     }
     .message-timestamp {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--text-muted);
     }
     .message-text {
-      font-size: 16px;
+      font-size: 15px;
       color: var(--text-primary);
       word-wrap: break-word;
     }
     .message-embed {
       background-color: var(--embed-bg);
-      border-left: 4px solid var(--embed-border);
-      padding: 10px;
-      margin-top: 10px;
+      border-left: 3px solid var(--embed-border);
+      padding: 8px;
+      margin-top: 8px;
       border-radius: 4px;
-      max-width: 500px;
+      max-width: 480px;
     }
     .embed-title {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 600;
       color: var(--embed-title);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
     .embed-description {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--embed-field-value);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
     .embed-field {
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
     .embed-field-name {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       color: var(--embed-field-name);
     }
     .embed-field-value {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--embed-field-value);
     }
     .embed-image, .attachment img {
       max-width: 100%;
       border-radius: 4px;
-      margin-top: 8px;
+      margin-top: 6px;
       cursor: pointer;
     }
     .embed-thumbnail {
-      max-width: 80px;
-      max-height: 80px;
+      max-width: 70px;
+      max-height: 70px;
       border-radius: 4px;
       float: right;
-      margin-left: 10px;
+      margin-left: 8px;
       cursor: pointer;
     }
     .message-attachments {
-      margin-top: 10px;
+      margin-top: 8px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
     }
     .attachment {
       background-color: var(--attachment-bg);
-      padding: 8px;
+      padding: 6px;
       border-radius: 4px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
     .attachment img, .attachment video {
-      max-width: 300px;
-      max-height: 200px;
+      max-width: 280px;
+      max-height: 180px;
       border-radius: 4px;
     }
     .attachment a {
       color: var(--text-primary);
       text-decoration: none;
-      font-size: 14px;
+      font-size: 13px;
     }
     .attachment a:hover {
       text-decoration: underline;
     }
     .input-area {
       display: flex;
-      gap: 10px;
-      padding-top: 10px;
-      min-height: 60px;
+      flex-direction: column;
+      gap: 8px;
+      padding-top: 8px;
       margin-top: auto;
+    }
+    .input-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
     }
     textarea {
       flex: 1;
-      min-height: 44px;
-      max-height: 144px;
+      min-height: 40px;
+      max-height: 120px;
       resize: none;
-      font-size: 16px;
-      padding: 10px;
-      border-radius: 8px;
+      font-size: 15px;
+      padding: 8px;
+      border-radius: 6px;
       background-color: var(--input-bg);
       color: var(--text-primary);
-      border: none;
+      border: 1px solid var(--input-border);
       outline: none;
       box-sizing: border-box;
+      transition: border-color 0.2s;
+    }
+    textarea:focus {
+      border-color: var(--button-bg);
     }
     textarea::placeholder {
       color: var(--input-placeholder);
     }
     button {
-      padding: 10px 20px;
-      font-size: 16px;
+      padding: 8px 16px;
+      font-size: 15px;
       background-color: var(--button-bg);
       color: #ffffff;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
       transition: background-color 0.2s;
     }
     button:hover {
       background-color: var(--button-hover);
     }
-    .status {
-      margin-top: 10px;
+    button:disabled {
+      background-color: var(--text-muted);
+      cursor: not-allowed;
+    }
+    .file-upload-button {
+      background-color: var(--file-upload-button-bg);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .file-upload-button:hover {
+      background-color: var(--file-upload-button-hover);
+    }
+    .file-preview {
+      background-color: var(--file-preview-bg);
+      padding: 6px 8px;
+      border-radius: 6px;
+      border: 1px solid var(--file-preview-border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      max-width: 280px;
+    }
+    .file-preview img, .file-preview video {
+      max-width: 80px;
+      max-height: 80px;
+      border-radius: 4px;
+    }
+    .file-preview-name {
+      font-size: 13px;
+      color: var(--text-primary);
+      word-break: break-all;
+      flex: 1;
+    }
+    .file-preview-remove {
+      background-color: var(--delete-button-bg);
+      color: #ffffff;
+      border: none;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .file-preview-remove:hover {
+      background-color: var(--delete-button-hover);
+    }
+    .status {
+      margin-top: 8px;
+      font-size: 13px;
       color: var(--text-muted);
     }
     .modal-status {
-      margin-top: 10px;
-      font-size: 14px;
+      margin-top: 8px;
+      font-size: 13px;
       color: var(--text-muted);
     }
     .modal-status.error {
       color: var(--error-color);
     }
+    .privacy-notice {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 8px;
+      white-space: pre-wrap;
+    }
     .sidebar {
-      width: 72px;
+      width: 70px;
       background-color: var(--bg-sidebar);
-      padding: 12px 0;
+      padding: 10px 0;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
-      border-right: 1px solid #2c2f33;
+      gap: 6px;
+      border-right: 1px solid var(--input-border);
     }
     .webhook-item {
-      width: 48px;
-      height: 48px;
+      width: 46px;
+      height: 46px;
       border-radius: 50%;
       overflow: hidden;
       cursor: pointer;
@@ -494,7 +629,7 @@ l-bg: #3c3836;
       object-fit: cover;
     }
     .webhook-item:hover {
-      border-radius: 15px;
+      border-radius: 14px;
       background-color: var(--webhook-hover);
     }
     .webhook-item.active::after {
@@ -504,22 +639,22 @@ l-bg: #3c3836;
       top: 50%;
       transform: translateY(-50%);
       width: 8px;
-      height: 20px;
+      height: 18px;
       background-color: var(--active-webhook);
       border-radius: 0 4px 4px 0;
     }
     .webhook-item.selected {
       border: 2px solid var(--selected-webhook);
-      border-radius: 15px;
+      border-radius: 14px;
     }
     .add-webhook, .delete-mode, .delete-selected, .settings-button {
-      width: 48px;
-      height: 48px;
+      width: 46px;
+      height: 46px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
+      font-size: 22px;
       cursor: pointer;
       transition: border-radius 0.2s, background-color 0.2s;
     }
@@ -528,7 +663,7 @@ l-bg: #3c3836;
       color: #ffffff;
     }
     .add-webhook:hover {
-      border-radius: 15px;
+      border-radius: 14px;
       background-color: var(--add-button-hover);
     }
     .delete-mode {
@@ -536,7 +671,7 @@ l-bg: #3c3836;
       color: #ffffff;
     }
     .delete-mode:hover {
-      border-radius: 15px;
+      border-radius: 14px;
       background-color: var(--delete-mode-hover);
     }
     .delete-selected {
@@ -545,7 +680,7 @@ l-bg: #3c3836;
       display: none;
     }
     .delete-selected:hover {
-      border-radius: 15px;
+      border-radius: 14px;
       background-color: var(--delete-button-hover);
     }
     .settings-button {
@@ -553,7 +688,7 @@ l-bg: #3c3836;
       color: #ffffff;
     }
     .settings-button:hover {
-      border-radius: 15px;
+      border-radius: 14px;
       background-color: var(--button-hover);
     }
     .modal, .image-modal, .settings-modal {
@@ -570,12 +705,12 @@ l-bg: #3c3836;
     }
     .modal-content, .settings-modal-content {
       background-color: var(--modal-bg);
-      padding: 30px;
-      border-radius: 8px;
-      width: 500px;
+      padding: 24px;
+      border-radius: 6px;
+      width: 480px;
       max-width: 90%;
       color: var(--text-primary);
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
     .image-modal-content {
       background-color: transparent;
@@ -590,62 +725,113 @@ l-bg: #3c3836;
     .image-modal-content img {
       max-width: 100%;
       max-height: 100%;
-      border-radius: 8px;
+      border-radius: 6px;
       object-fit: contain;
     }
     .close-button {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      top: 8px;
+      right: 8px;
       background-color: rgba(0, 0, 0, 0.5);
       color: #ffffff;
       border: none;
       border-radius: 50%;
-      width: 30px;
-      height: 30px;
+      width: 28px;
+      height: 28px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
+      font-size: 18px;
       cursor: pointer;
       transition: background-color 0.2s;
     }
     .close-button:hover {
-      background-color: rgba(0, 0, 0, 0.8);
+      background-color: rgba(0, 0, 0, 0.7);
     }
     .modal-content input, .settings-modal-content select {
       width: 100%;
-      padding: 12px;
-      margin: 15px 0;
+      padding: 10px;
+      margin: 12px 0;
       border-radius: 4px;
       background-color: var(--input-bg);
       color: var(--text-primary);
-      border: none;
-      font-size: 16px;
+      border: 1px solid var(--input-border);
+      font-size: 15px;
       box-sizing: border-box;
     }
     .modal-buttons, .settings-modal-buttons {
       display: flex;
-      gap: 10px;
+      gap: 8px;
     }
     .modal-buttons button, .settings-modal-buttons button {
       flex: 1;
-      padding: 12px;
-      font-size: 16px;
+      padding: 10px;
+      font-size: 15px;
     }
     h2 {
-      font-size: 20px;
+      font-size: 18px;
       color: var(--text-primary);
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
     .settings-section {
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
     .settings-section label {
       display: block;
-      font-size: 16px;
-      margin-bottom: 10px;
+      font-size: 15px;
+      margin-bottom: 8px;
       color: var(--text-primary);
+    }
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .toggle-switch {
+      position: relative;
+      width: 48px;
+      height: 24px;
+    }
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--toggle-bg);
+      border-radius: 24px;
+      transition: background-color 0.3s;
+    }
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 2px;
+      bottom: 2px;
+      background-color: var(--toggle-thumb);
+      border-radius: 50%;
+      transition: transform 0.3s, background-color 0.3s;
+    }
+    input:checked + .toggle-slider {
+      background-color: var(--toggle-bg-checked);
+    }
+    input:checked + .toggle-slider:before {
+      transform: translateX(24px);
+      background-color: var(--toggle-thumb-checked);
+    }
+    input:disabled + .toggle-slider {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    input[type="file"] {
+      display: none;
     }
   </style>
 </head>
@@ -667,8 +853,18 @@ l-bg: #3c3836;
     <div class="chat-area">
       <div class="chat-log" id="chatLog"></div>
       <div class="input-area">
-        <textarea id="message" placeholder="Type a message..."></textarea>
-        <button onclick="sendMessage()">Send</button>
+        <div class="input-row">
+          <textarea id="message" placeholder="Type a message..."></textarea>
+          <label for="fileInput" class="file-upload-button">+</label>
+          <input type="file" id="fileInput" accept="image/*,video/*,application/pdf,.doc,.docx,.txt" onchange="handleFileSelect(event)" />
+          <button id="sendButton" onclick="sendMessage()">Send</button>
+        </div>
+        <div class="file-preview" id="filePreview" style="display: none;">
+          <img id="filePreviewImage" style="display: none;" />
+          <video id="filePreviewVideo" style="display: none;" controls></video>
+          <span class="file-preview-name" id="filePreviewName"></span>
+          <button class="file-preview-remove" onclick="removeFile()">×</button>
+        </div>
       </div>
       <div class="status" id="status"></div>
     </div>
@@ -678,6 +874,7 @@ l-bg: #3c3836;
       <h2>Add a Webhook</h2>
       <input type="text" id="webhookUrlInput" placeholder="Enter Discord Webhook URL (e.g., https://discord.com/api/webhooks/...)">
       <div class="modal-status" id="modalStatus"></div>
+      <div class="privacy-notice" id="privacyNotice"></div>
       <div class="modal-buttons">
         <button onclick="addWebhook()">Add Webhook</button>
         <button onclick="hideAddWebhookModal()">Cancel</button>
@@ -706,14 +903,21 @@ l-bg: #3c3836;
         </select>
       </div>
       <div class="settings-section">
-        <label>Notifications (Coming Soon)</label>
-        <input type="checkbox" disabled>
+        <label for="notificationsToggle">Notifications</label>
+        <div class="toggle-container">
+          <div class="toggle-switch">
+            <input type="checkbox" id="notificationsToggle" onchange="toggleNotifications()">
+            <span class="toggle-slider"></span>
+          </div>
+          <span id="notificationsStatus"></span>
+        </div>
       </div>
       <div class="settings-modal-buttons">
         <button onclick="hideSettingsModal()">Close</button>
       </div>
     </div>
   </div>
+  <audio id="notificationSound" src="DCN.mp3"></audio>
 
   <script>
     let webhooks = [];
@@ -722,8 +926,15 @@ l-bg: #3c3836;
     let pollingInterval = null;
     let deleteMode = false;
     let selectedWebhooks = new Set();
+    let isSending = false;
+    let notificationsEnabled = false;
+    let seenMessageIds = new Set();
     const consoleElement = document.getElementById('console');
     const chatLog = document.getElementById('chatLog');
+    const sendButton = document.getElementById('sendButton');
+    const notificationsToggle = document.getElementById('notificationsToggle');
+    const notificationsStatus = document.getElementById('notificationsStatus');
+    const notificationSound = document.getElementById('notificationSound');
     const BACKEND_URL = 'http://localhost:3000';
 
     function log(message) {
@@ -734,6 +945,12 @@ l-bg: #3c3836;
     function toggleConsole() {
       consoleElement.classList.toggle('collapsed');
       log('Console toggled.');
+    }
+
+    function playNotificationSound() {
+      notificationSound.play().catch(error => {
+        log(`Error playing notification sound: ${error.message}`);
+      });
     }
 
     async function loadWebhooks() {
@@ -750,8 +967,8 @@ l-bg: #3c3836;
                 body: JSON.stringify({ url })
               });
               if (response.ok) {
-                const webhook = await response.json();
-                webhooks.push(webhook);
+                const data = await response.json();
+                webhooks.push(data.webhook);
               } else {
                 log(`Failed to reload webhook: ${url}`);
               }
@@ -808,6 +1025,7 @@ l-bg: #3c3836;
       document.getElementById('webhookUrlInput').value = '';
       document.getElementById('modalStatus').textContent = '';
       document.getElementById('modalStatus').classList.remove('error');
+      document.getElementById('privacyNotice').textContent = '';
       log('Add Webhook modal opened.');
     }
 
@@ -816,11 +1034,13 @@ l-bg: #3c3836;
       document.getElementById('webhookUrlInput').value = '';
       document.getElementById('modalStatus').textContent = '';
       document.getElementById('modalStatus').classList.remove('error');
+      document.getElementById('privacyNotice').textContent = '';
       log('Add Webhook modal closed.');
     }
 
     function showSettingsModal() {
       document.getElementById('settingsModal').style.display = 'flex';
+      updateNotificationsToggle();
       log('Settings modal opened.');
     }
 
@@ -847,6 +1067,7 @@ l-bg: #3c3836;
     async function addWebhook() {
       const url = document.getElementById('webhookUrlInput').value.trim();
       const modalStatus = document.getElementById('modalStatus');
+      const privacyNoticeElement = document.getElementById('privacyNotice');
 
       if (!url) {
         modalStatus.textContent = '❌ Webhook URL cannot be empty.';
@@ -887,7 +1108,8 @@ l-bg: #3c3836;
           return;
         }
 
-        const webhook = await response.json();
+        const data = await response.json();
+        const webhook = data.webhook;
         webhooks.push(webhook);
         saveWebhooks();
         renderWebhooks();
@@ -895,6 +1117,7 @@ l-bg: #3c3836;
           setActiveWebhook(webhook);
         }
         modalStatus.textContent = '✅ Webhook added successfully!';
+        privacyNoticeElement.textContent = data.privacyNotice || '';
         log('Webhook added: ' + webhook.name);
         setTimeout(hideAddWebhookModal, 1000);
       } catch (error) {
@@ -1010,6 +1233,7 @@ l-bg: #3c3836;
       renderWebhooks();
       saveActiveWebhook();
       document.getElementById('chatLog').innerHTML = '';
+      seenMessageIds.clear();
       startPollingMessages();
       updateHeader();
       document.getElementById('status').textContent = `✅ Switched to webhook: ${webhook.name}`;
@@ -1051,54 +1275,231 @@ l-bg: #3c3836;
       }
     }
 
+    function handleFileSelect(event) {
+      const fileInput = event.target;
+      const file = fileInput.files && fileInput.files[0];
+      const filePreview = document.getElementById('filePreview');
+      const filePreviewImage = document.getElementById('filePreviewImage');
+      const filePreviewVideo = document.getElementById('filePreviewVideo');
+      const filePreviewName = document.getElementById('filePreviewName');
+
+      if (!file) {
+        removeFile();
+        log('No file selected.');
+        return;
+      }
+
+      if (!(file instanceof File) || !file.name || !file.type || file.size === 0) {
+        log(`Invalid file selected: ${file.name || 'unknown'} (Type: ${file.type || 'none'}, Size: ${file.size || 'unknown'} bytes)`);
+        removeFile();
+        return;
+      }
+
+      if (file.size > 8 * 1024 * 1024) {
+        log(`File too large: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)}MB)`);
+        removeFile();
+        return;
+      }
+
+      filePreviewName.textContent = file.name;
+      filePreview.style.display = 'flex';
+
+      if (file.type.startsWith('image/')) {
+        filePreviewImage.src = URL.createObjectURL(file);
+        filePreviewImage.style.display = 'block';
+        filePreviewVideo.style.display = 'none';
+        log('Image preview generated for: ' + file.name);
+      } else if (file.type.startsWith('video/')) {
+        filePreviewVideo.src = URL.createObjectURL(file);
+        filePreviewVideo.style.display = 'block';
+        filePreviewImage.style.display = 'none';
+        log('Video preview generated for: ' + file.name);
+      } else {
+        filePreviewImage.style.display = 'none';
+        filePreviewVideo.style.display = 'none';
+        log('No preview for non-image/video file: ' + file.name);
+      }
+    }
+
+    function removeFile() {
+      if (isSending) {
+        log('Remove file blocked: Message is being sent.');
+        return;
+      }
+      const filePreview = document.getElementById('filePreview');
+      const filePreviewImage = document.getElementById('filePreviewImage');
+      const filePreviewVideo = document.getElementById('filePreviewVideo');
+      const filePreviewName = document.getElementById('filePreviewName');
+      filePreview.style.display = 'none';
+      if (filePreviewImage.src) URL.revokeObjectURL(filePreviewImage.src);
+      if (filePreviewVideo.src) URL.revokeObjectURL(filePreviewVideo.src);
+      filePreviewImage.src = '';
+      filePreviewImage.style.display = 'none';
+      filePreviewVideo.src = '';
+      filePreviewVideo.style.display = 'none';
+      filePreviewName.textContent = '';
+      document.getElementById('fileInput').value = '';
+      log('File removed.');
+    }
+
     async function sendMessage() {
-      const message = document.getId('message').value;
+      if (isSending) {
+        log('Send message blocked: Another send is in progress.');
+        return;
+      }
+      isSending = true;
+      sendButton.disabled = true;
+
+      const message = document.getElementById('message').value.trim();
       const status = document.getElementById('status');
+      const fileInput = document.getElementById('fileInput');
+      const file = fileInput.files && fileInput.files[0];
 
       if (!activeWebhook) {
         status.textContent = '❌ No webhook selected.';
         log('No webhook selected for sending message.');
+        isSending = false;
+        sendButton.disabled = false;
         return;
       }
 
-      if (message.length === 0) {
-        status.textContent = '❌ Message cannot be empty.';
-        log('Empty message attempted.');
-        return;
-      }
       if (message.length > 2000) {
         status.textContent = '❌ Message is too long. Max 2000 characters.';
         log('Message too long: ' + message.length + ' characters.');
+        isSending = false;
+        sendButton.disabled = false;
         return;
       }
 
       try {
+        const formData = new FormData();
+        formData.append('webhookId', activeWebhook.id);
+        if (message) {
+          formData.append('content', message);
+        }
+
+        if (file) {
+          log(`Validating file before append: ${file.name} (Type: ${file.type}, Size: ${(file.size / 1024).toFixed(2)}KB, instanceof File: ${file instanceof File}, instanceof Blob: ${file instanceof Blob})`);
+          if (!(file instanceof File) || !file.name || !file.type || file.size === 0) {
+            status.textContent = '❌ Invalid file detected. Please select a valid file.';
+            log('Invalid file detected in sendMessage.');
+            removeFile();
+            isSending = false;
+            sendButton.disabled = false;
+            if (!message) return;
+          } else {
+            formData.append('file', file, file.name);
+            log(`File appended to FormData: ${file.name}`);
+          }
+        } else {
+          log('No file selected for this message.');
+        }
+
+        log('Sending FormData to backend...');
         const response = await fetch(`${BACKEND_URL}/send-message`, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            webhookId: activeWebhook.id,
-            content: message
-          })
+          body: formData
         });
 
         if (!response.ok) {
           const error = await response.json();
           status.textContent = `❌ Failed to send message: ${error.error}`;
           log(`Failed to send message: ${error.error}`);
+          removeFile();
+          isSending = false;
+          sendButton.disabled = false;
           return;
         }
 
         status.textContent = '✅ Message sent successfully!';
         document.getElementById('message').value = '';
+        removeFile();
         log('Message sent successfully.');
         fetchMessages();
+
+        // Send notification if enabled
+        if (notificationsEnabled && Notification.permission === 'granted') {
+          const notificationTitle = 'Message Sent';
+          const notificationBody = message || (file ? `File sent: ${file.name}` : 'Message sent successfully.');
+          const notification = new Notification(notificationTitle, {
+            body: notificationBody,
+            icon: '/icon.png'
+          });
+          notification.onclick = () => {
+            window.focus();
+            notification.close();
+          };
+          notification.addEventListener('error', () => {
+            log('Notification error occurred.');
+          });
+          playNotificationSound();
+          log('Notification sent: ' + notificationBody);
+        }
       } catch (error) {
         status.textContent = `❌ Error sending message: ${error.message}`;
         log(`Error sending message: ${error.message}`);
+        removeFile();
+      } finally {
+        isSending = false;
+        sendButton.disabled = false;
       }
+    }
+
+    async function toggleNotifications() {
+      if (!('Notification' in window)) {
+        notificationsToggle.checked = false;
+        notificationsStatus.textContent = 'Notifications not supported in this browser.';
+        notificationsToggle.disabled = true;
+        log('Notifications API not supported.');
+        return;
+      }
+
+      if (notificationsToggle.checked) {
+        try {
+          const permission = await Notification.requestPermission();
+          if (permission === 'granted') {
+            notificationsEnabled = true;
+            notificationsStatus.textContent = 'Notifications enabled.';
+            log('Notification permission granted.');
+            localStorage.setItem('notificationsEnabled', 'true');
+          } else {
+            notificationsToggle.checked = false;
+            notificationsEnabled = false;
+            notificationsStatus.textContent = 'Notification permission denied.';
+            log('Notification permission denied.');
+            localStorage.setItem('notificationsEnabled', 'false');
+          }
+        } catch (error) {
+          notificationsToggle.checked = false;
+          notificationsEnabled = false;
+          notificationsStatus.textContent = 'Error requesting notifications.';
+          log(`Error requesting notification permission: ${error.message}`);
+          localStorage.setItem('notificationsEnabled', 'false');
+        }
+      } else {
+        notificationsEnabled = false;
+        notificationsStatus.textContent = 'Notifications disabled.';
+        log('Notifications disabled by user.');
+        localStorage.setItem('notificationsEnabled', 'false');
+      }
+    }
+
+    function updateNotificationsToggle() {
+      if (!('Notification' in window)) {
+        notificationsToggle.checked = false;
+        notificationsToggle.disabled = true;
+        notificationsStatus.textContent = 'Notifications not supported in this browser.';
+        log('Notifications API not supported.');
+        return;
+      }
+
+      const savedState = localStorage.getItem('notificationsEnabled');
+      notificationsEnabled = savedState === 'true';
+      notificationsToggle.checked = notificationsEnabled && Notification.permission === 'granted';
+      notificationsStatus.textContent = Notification.permission === 'granted' ? 
+        (notificationsEnabled ? 'Notifications enabled.' : 'Notifications disabled.') : 
+        (Notification.permission === 'denied' ? 'Notification permission denied.' : 'Notifications not yet requested.');
+      log(`Notifications state: enabled=${notificationsEnabled}, permission=${Notification.permission}`);
     }
 
     function startPollingMessages() {
@@ -1137,6 +1538,31 @@ l-bg: #3c3836;
 
         const chatLog = document.getElementById('chatLog');
         const atBottom = chatLog.scrollHeight - chatLog.scrollTop === chatLog.clientHeight;
+
+        // Check for new messages
+        const newMessages = messages.filter(message => !seenMessageIds.has(message.id));
+        if (newMessages.length > 0 && notificationsEnabled && Notification.permission === 'granted') {
+          newMessages.forEach(message => {
+            const notificationTitle = `New Message from ${message.author.username}`;
+            const notificationBody = message.content || 'New message received.';
+            const notification = new Notification(notificationTitle, {
+              body: notificationBody,
+              icon: '/icon.png'
+            });
+            notification.onclick = () => {
+              window.focus();
+              notification.close();
+            };
+            notification.addEventListener('error', () => {
+              log('Notification error occurred.');
+            });
+            playNotificationSound();
+            log(`Notification sent for new message from ${message.author.username}: ${notificationBody}`);
+          });
+        }
+
+        // Update seen messages
+        messages.forEach(message => seenMessageIds.add(message.id));
 
         chatLog.innerHTML = '';
         messages.reverse().forEach(message => {
@@ -1220,7 +1646,7 @@ l-bg: #3c3836;
           chatLog.scrollTop = chatLog.scrollHeight;
         }
 
-        log(`Fetched ${messages.length} messages.`);
+        log(`Fetched ${messages.length} messages, ${newMessages.length} new.`);
       } catch (error) {
         document.getElementById('status').textContent = `❌ Error fetching messages: ${error.message}`;
         log(`Error fetching messages: ${error.message}`);
