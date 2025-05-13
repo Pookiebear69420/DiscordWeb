@@ -10,22 +10,15 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
-// Use dynamic import for node-fetch
-let fetch;
-(async () => {
-  fetch = (await import('node-fetch')).default;
-})();
-
 dotenv.config();
 
 const app = express();
 app.set('trust proxy', 1); // Trust Render's proxy
 const port = process.env.PORT || 3000;
 
-// Middleware
+// Core middleware
 app.use(express.json());
-const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 1000, message: 'Too many requests from this IP, please try again later.' });
-app.use(limiter);
+app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 1000, message: 'Too many requests from this IP, please try again later.' }));
 app.use(cors({ origin: '*', methods: ['GET', 'POST', 'DELETE'], credentials: true }));
 app.use(session({ secret: process.env.SESSION_SECRET || 'your-secret-key', resave: false, saveUninitialized: true,
   cookie: { secure: process.env.NODE_ENV === 'production', httpOnly: true, sameSite: 'strict', maxAge: 24*60*60*1000 }
@@ -40,13 +33,11 @@ const lastAttempts = new Map();
 // Fully-proof webhook validation
 async function validateWebhook(url) {
   const now = Date.now(), cooldownMs = 5000;
-  if (lastAttempts.has(url) && now - lastAttempts.get(url) < cooldownMs) {
-    throw new Error('Too many attempts. Please wait a few seconds and try again.');
-  }
+  if (lastAttempts.has(url) && now - lastAttempts.get(url) < cooldownMs) throw new Error('Too many attempts. Please wait a few seconds and try again.');
   lastAttempts.set(url, now);
   if (webhookCache.has(url)) return webhookCache.get(url);
+  if (!fetch) await new Promise(r => setTimeout(r, 10)); // ensure fetch loaded
   try {
-    if (!fetch) throw new Error('Fetch module not loaded');
     const response = await fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' }, timeout: 5000 });
     if (response.status === 429) {
       const retryAfter = response.headers.get('retry-after') || 'unknown';
@@ -54,7 +45,13 @@ async function validateWebhook(url) {
     }
     if (!response.ok) throw new Error(`Invalid webhook URL: ${response.status} ${response.statusText}`);
     const data = await response.json();
-    const webhookData = { id: data.id, name: data.name || 'Unnamed Webhook', avatar: data.avatar ? `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png` : 'https://cdn.discordapp.com/embed/avatars/0.png', channelId: data.channel_id, url };
+    const webhookData = {
+      id: data.id,
+      name: data.name || 'Unnamed Webhook',
+      avatar: data.avatar ? `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png` : 'https://cdn.discordapp.com/embed/avatars/0.png',
+      channelId: data.channel_id,
+      url
+    };
     webhookCache.set(url, webhookData);
     return webhookData;
   } catch (error) {
@@ -78,17 +75,21 @@ app.post('/add-webhook', async (req, res) => {
 });
 
 app.post('/send-message', upload.single('file'), async (req, res) => {
-  const { webhookId, content } = req.body, file = req.file;
+  const { webhookId, content } = req.body;
+  const file = req.file;
   if (!webhookId) return res.status(400).json({ error: 'Webhook ID is required' });
   const webhook = webhooks.find(w => w.id === webhookId);
   if (!webhook) return res.status(404).json({ error: 'Webhook not found' });
   if (!content && !file) return res.status(400).json({ error: 'Content or file is required' });
   try {
-    if (!fetch) throw new Error('Fetch module not loaded');
-    const formData = new FormData(); if (content) formData.append('content', content);
+    const formData = new FormData();
+    if (content) formData.append('content', content);
     if (file) formData.append('file', file.buffer, { filename: file.originalname, contentType: file.mimetype });
     const response = await fetch(webhook.url, { method: 'POST', body: formData, headers: formData.getHeaders(), timeout: 10000 });
-    if (!response.ok) { const errorText = await response.text(); throw new Error(`Failed to send message to Discord: ${response.status} - ${errorText}`); }
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Failed to send message: ${response.status} - ${errorText}`);
+    }
     return res.json({ success: true });
   } catch (error) {
     console.error(`Error sending message: ${error.message}`);
@@ -97,7 +98,7 @@ app.post('/send-message', upload.single('file'), async (req, res) => {
 });
 
 app.delete('/webhook/:id', (req, res) => {
-  const { id } = req.params, index = webhooks.findIndex(w => w.id === id);
+  const index = webhooks.findIndex(w => w.id === req.params.id);
   if (index === -1) return res.status(404).json({ error: 'Webhook not found' });
   webhooks.splice(index, 1);
   return res.json({ success: true });
@@ -106,7 +107,7 @@ app.delete('/webhook/:id', (req, res) => {
 app.get('/messages/:channelId', async (req, res) => {
   try {
     const channel = await client.channels.fetch(req.params.channelId, { force: true });
-    if (!channel?.isTextBased?.()) return res.status(400).json({ error: 'Channel not found or not text-based' });
+    if (!channel?.isTextBased?.()) return res.status(404).json({ error: 'Channel not found or not text-based' });
     const perms = channel.permissionsFor(channel.guild.members.me);
     if (!perms.has([PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.ReadMessageHistory])) return res.status(403).json({ error: 'Missing permissions' });
     const msgs = await channel.messages.fetch({ limit: 50 });
@@ -118,14 +119,18 @@ app.get('/messages/:channelId', async (req, res) => {
   }
 });
 
-// Static files and SPA fallback
+// Serve static frontend (after API)
 app.use(express.static(path.join(__dirname, 'public')));
-app.get('*', (req, res) => res.status(404).json({ error: 'Not found' }));
+
+// SPA fallback for unmatched GET (serves index.html)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 client.once('ready', () => console.log(`Logged in as ${client.user.tag}`));
 client.login(process.env.BOT_TOKEN).catch(err => { console.error(`Discord login error: ${err.message}`); process.exit(1); });
 
-// HTTPS or HTTP server start
+// Start server
 if (process.env.NODE_ENV === 'production' && process.env.USE_LOCAL_HTTPS === 'true') {
   const key = fs.readFileSync(process.env.SSL_KEY_PATH, 'utf8');
   const cert = fs.readFileSync(process.env.SSL_CERT_PATH, 'utf8');
