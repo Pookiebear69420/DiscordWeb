@@ -60,7 +60,7 @@ const lastAttempts = new Map();
 // Utility: sleep for ms
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-// Enhanced webhook validation with capped backoff
+// Enhanced webhook validation with capped backoff and caching
 async function validateWebhook(url) {
   const cooldownMs = 5000;
   const now = Date.now();
@@ -71,55 +71,44 @@ async function validateWebhook(url) {
 
   if (webhookCache.has(url)) return webhookCache.get(url);
 
-  const maxBackoff = 10000; // 10 seconds max backoff
-  const maxRetryAfter = 15000; // 15 seconds max Discord retry-after header
-  let attempt = 0;
-  let backoff = 1000;
+  const maxRetryAfter = 10000; // 10s max wait if Discord rate-limits
 
-  while (attempt < 4) {
-    try {
-      if (!fetch) throw new Error('Fetch module not loaded');
-      const response = await fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' }, timeout: 5000 });
+  try {
+    if (!fetch) throw new Error('Fetch module not loaded');
 
-      if (response.status === 429) {
-        const retryAfterHeader = response.headers.get('retry-after');
-        const retrySeconds = retryAfterHeader ? parseInt(retryAfterHeader, 10) : null;
-        const waitTime = retrySeconds !== null ? retrySeconds * 1000 : backoff;
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      timeout: 5000
+    });
 
-        // Cap extremely long retry headers from Discord
-        if (waitTime > maxRetryAfter) {
-          throw new Error(`Discord retry-after too long (${waitTime}ms), aborting.`);
-        }
-
-        console.warn(`Rate limited, retrying after ${waitTime}ms`);
-        await sleep(waitTime);
-        attempt++;
-        backoff = Math.min(backoff * 2, maxBackoff);
-        continue;
+    if (response.status === 429) {
+      const retryAfter = parseInt(response.headers.get('retry-after')) * 1000 || 0;
+      if (retryAfter > maxRetryAfter) {
+        throw new Error(`Discord rate limit too long (${retryAfter}ms), aborting.`);
       }
-
-      if (!response.ok) throw new Error(`Invalid webhook URL: ${response.status} ${response.statusText}`);
-      const data = await response.json();
-      const webhookData = {
-        id: data.id,
-        name: data.name || 'Unnamed Webhook',
-        avatar: data.avatar ? `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png` : 'https://cdn.discordapp.com/embed/avatars/0.png',
-        channelId: data.channel_id,
-        url
-      };
-
-      webhookCache.set(url, webhookData);
-      return webhookData;
-    } catch (error) {
-      attempt++;
-      if (attempt >= 4) {
-        console.error('Validation failed after retries:', error.message);
-        throw new Error(`Webhook validation failed: ${error.message}`);
-      }
-      console.warn(`Attempt ${attempt} error: ${error.message}. Retrying...`);
-      await sleep(backoff);
-      backoff = Math.min(backoff * 2, maxBackoff);
+      console.warn(`Rate limited. Waiting ${retryAfter}ms`);
+      await sleep(retryAfter);
+      return await validateWebhook(url);
     }
+
+    if (!response.ok) {
+      throw new Error(`Invalid webhook URL: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    const webhook = {
+      id: data.id,
+      name: data.name || 'Unnamed Webhook',
+      avatar: data.avatar ? `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png` : 'https://cdn.discordapp.com/embed/avatars/0.png',
+      channelId: data.channel_id,
+      url
+    };
+
+    webhookCache.set(url, webhook);
+    return webhook;
+  } catch (err) {
+    throw new Error(`Webhook validation failed: ${err.message}`);
   }
 }
 
