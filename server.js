@@ -130,21 +130,35 @@ app.post('/add-webhook', async (req, res) => {
   }
 });
 
-app.post('/send-message', upload.single('file'), async (req, res) => {
+app.post('/send-message', upload.array('files'), async (req, res) => {
   const { webhookId, content } = req.body;
   if (!webhookId) return res.status(400).json({ error: 'Webhook ID is required' });
   const webhook = webhooks.find(w => w.id === webhookId);
   if (!webhook) return res.status(404).json({ error: 'Webhook not found' });
-  if (!content && !req.file) return res.status(400).json({ error: 'Content or file is required' });
+  if (!content && (!req.files || req.files.length === 0)) return res.status(400).json({ error: 'Content or at least one file is required' });
+
   try {
     const formData = new FormData();
     if (content) formData.append('content', content);
-    if (req.file) formData.append('file', req.file.buffer, { filename: req.file.originalname, contentType: req.file.mimetype });
-    const response = await fetch(webhook.url, { method: 'POST', body: formData, headers: formData.getHeaders(), timeout: 10000 });
+
+    if (req.files) {
+      for (const file of req.files) {
+        formData.append('files[]', file.buffer, { filename: file.originalname, contentType: file.mimetype });
+      }
+    }
+
+    const response = await fetch(webhook.url, {
+      method: 'POST',
+      body: formData,
+      headers: formData.getHeaders(),
+      timeout: 10000
+    });
+
     if (!response.ok) {
       const err = await response.text();
       throw new Error(`Failed to send message: ${response.status} ${err}`);
     }
+
     res.json({ success: true });
   } catch (error) {
     res.status(500).json({ error: error.message });
