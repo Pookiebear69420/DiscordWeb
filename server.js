@@ -72,6 +72,7 @@ async function validateWebhook(url) {
   if (webhookCache.has(url)) return webhookCache.get(url);
 
   const maxBackoff = 10000; // 10 seconds max backoff
+  const maxRetryAfter = 15000; // 15 seconds max Discord retry-after header
   let attempt = 0;
   let backoff = 1000;
 
@@ -85,9 +86,9 @@ async function validateWebhook(url) {
         const retrySeconds = retryAfterHeader ? parseInt(retryAfterHeader, 10) : null;
         const waitTime = retrySeconds !== null ? retrySeconds * 1000 : backoff;
 
-        // If Discord asks for a very long retry, abort early
-        if (waitTime > maxBackoff) {
-          throw new Error(`Discord rate limit too long (${waitTime}ms), aborting.`);
+        // Cap extremely long retry headers from Discord
+        if (waitTime > maxRetryAfter) {
+          throw new Error(`Discord retry-after too long (${waitTime}ms), aborting.`);
         }
 
         console.warn(`Rate limited, retrying after ${waitTime}ms`);
