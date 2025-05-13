@@ -10,9 +10,6 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
-app.set('trust proxy', 1); // trust first proxy
-
-
 // Use dynamic import for node-fetch
 let fetch;
 (async () => {
@@ -22,7 +19,9 @@ let fetch;
 dotenv.config();
 
 const app = express();
+app.set('trust proxy', 1);
 const port = process.env.PORT || 3000;
+
 
 // Serve static files (e.g., index.html, DCN.mp3) from the root directory
 app.use(express.static(__dirname));
