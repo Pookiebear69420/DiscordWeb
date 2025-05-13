@@ -9,6 +9,9 @@ const rateLimit = require('express-rate-limit');
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
+// Add Redis dependencies
+const Redis = require('redis');
+const RedisStore = require('connect-redis').default;
 
 // Use dynamic import for node-fetch
 let fetch;
@@ -20,6 +23,15 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+// Initialize Redis client
+const redisClient = Redis.createClient({
+  url: process.env.REDIS_URL || 'redis://localhost:6379', // Use the Render Redis URL from environment variable
+});
+redisClient.on('error', (err) => console.error('Redis Client Error:', err));
+redisClient.connect().catch(err => {
+  console.error('Failed to connect to Redis:', err);
+});
 
 // Serve static files (e.g., index.html, DCN.mp3) from the root directory
 app.use(express.static(__dirname));
@@ -45,14 +57,21 @@ app.use(cors({
 }));
 
 app.use(express.json());
+
+// Configure session with RedisStore
 app.use(session({
+  store: new RedisStore({
+    client: redisClient,
+    prefix: 'session:', // Optional: prefix for session keys in Redis
+  }),
   secret: process.env.SESSION_SECRET || 'your-secret-key',
   resave: false,
   saveUninitialized: true,
   cookie: { 
     secure: process.env.NODE_ENV === 'production', // Secure cookies in production
     httpOnly: true,
-    sameSite: 'strict'
+    sameSite: 'strict',
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
   }
 }));
 
@@ -211,7 +230,7 @@ app.get('/messages/:channelId', async (req, res) => {
       return res.status(403).json({ error: 'Bot lacks permissions to view channel or read message history' });
     }
 
-    const messages = await channel.messages.fetch({ limit: 100 });
+    const messages = await channel.messages.fetch({ limit: 50 });
     const formattedMessages = messages.map(msg => ({
       id: msg.id,
       content: msg.content,
@@ -269,3 +288,10 @@ if (process.env.NODE_ENV === 'production' && process.env.USE_LOCAL_HTTPS === 'tr
     console.log(`Server running on port ${port}`);
   });
 }
+
+// Gracefully close Redis connection on server shutdown
+process.on('SIGTERM', async () => {
+  console.log('SIGTERM received. Closing Redis connection...');
+  await redisClient.quit();
+  process.exit(0);
+});
