@@ -60,7 +60,7 @@ const lastAttempts = new Map();
 // Utility: sleep for ms
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-// Enhanced webhook validation with exponential backoff
+// Enhanced webhook validation with capped backoff
 async function validateWebhook(url) {
   const cooldownMs = 5000;
   const now = Date.now();
@@ -71,21 +71,32 @@ async function validateWebhook(url) {
 
   if (webhookCache.has(url)) return webhookCache.get(url);
 
+  const maxBackoff = 10000; // 10 seconds max backoff
   let attempt = 0;
   let backoff = 1000;
+
   while (attempt < 4) {
     try {
       if (!fetch) throw new Error('Fetch module not loaded');
       const response = await fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' }, timeout: 5000 });
+
       if (response.status === 429) {
-        const retryAfter = response.headers.get('retry-after');
-        const wait = retryAfter ? parseInt(retryAfter) * 1000 : backoff;
-        console.warn(`Discord rate limit, retrying after ${wait}ms`);
-        await sleep(wait);
+        const retryAfterHeader = response.headers.get('retry-after');
+        const retrySeconds = retryAfterHeader ? parseInt(retryAfterHeader, 10) : null;
+        const waitTime = retrySeconds !== null ? retrySeconds * 1000 : backoff;
+
+        // If Discord asks for a very long retry, abort early
+        if (waitTime > maxBackoff) {
+          throw new Error(`Discord rate limit too long (${waitTime}ms), aborting.`);
+        }
+
+        console.warn(`Rate limited, retrying after ${waitTime}ms`);
+        await sleep(waitTime);
         attempt++;
-        backoff *= 2;
+        backoff = Math.min(backoff * 2, maxBackoff);
         continue;
       }
+
       if (!response.ok) throw new Error(`Invalid webhook URL: ${response.status} ${response.statusText}`);
       const data = await response.json();
       const webhookData = {
@@ -95,17 +106,18 @@ async function validateWebhook(url) {
         channelId: data.channel_id,
         url
       };
+
       webhookCache.set(url, webhookData);
       return webhookData;
     } catch (error) {
-      if (attempt >= 3) {
-        console.error('Webhook validation failed after retries:', error.message);
+      attempt++;
+      if (attempt >= 4) {
+        console.error('Validation failed after retries:', error.message);
         throw new Error(`Webhook validation failed: ${error.message}`);
       }
-      console.warn(`Validation attempt ${attempt + 1} failed: ${error.message}`);
+      console.warn(`Attempt ${attempt} error: ${error.message}. Retrying...`);
       await sleep(backoff);
-      attempt++;
-      backoff *= 2;
+      backoff = Math.min(backoff * 2, maxBackoff);
     }
   }
 }
@@ -118,7 +130,7 @@ app.post('/add-webhook', async (req, res) => {
   }
   try {
     const webhook = await validateWebhook(url);
-    if (webhooks.find(w => w.url === url)) {
+    if (webhooks.some(w => w.url === url)) {
       return res.status(400).json({ error: 'Webhook already exists' });
     }
     webhooks.push(webhook);
@@ -166,7 +178,14 @@ app.get('/messages/:channelId', async (req, res) => {
       return res.status(403).json({ error: 'Missing permissions' });
     }
     const msgs = await channel.messages.fetch({ limit: 50 });
-    const formatted = msgs.map(m => ({ id: m.id, content: m.content, author: { username: m.author.username, avatar: m.author.avatarURL() || '' }, timestamp: m.createdAt.toISOString(), embeds: m.embeds, attachments: m.attachments }));
+    const formatted = msgs.map(m => ({
+      id: m.id,
+      content: m.content,
+      author: { username: m.author.username, avatar: m.author.avatarURL() || '' },
+      timestamp: m.createdAt.toISOString(),
+      embeds: m.embeds,
+      attachments: m.attachments
+    }));
     res.json(formatted);
   } catch (error) {
     res.status(500).json({ error: error.message });
