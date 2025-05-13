@@ -211,7 +211,7 @@ app.get('/messages/:channelId', async (req, res) => {
       return res.status(403).json({ error: 'Bot lacks permissions to view channel or read message history' });
     }
 
-    const messages = await channel.messages.fetch({ limit: 200 });
+    const messages = await channel.messages.fetch({ limit: 100 });
     const formattedMessages = messages.map(msg => ({
       id: msg.id,
       content: msg.content,
