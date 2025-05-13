@@ -935,7 +935,7 @@
     const notificationsToggle = document.getElementById('notificationsToggle');
     const notificationsStatus = document.getElementById('notificationsStatus');
     const notificationSound = document.getElementById('notificationSound');
-    const BACKEND_URL = 'http://localhost:3000';
+    const BACKEND_URL = ''; // Relative path for Render deployment
 
     function log(message) {
       consoleElement.innerHTML += `<div>${new Date().toLocaleTimeString()} - ${message}</div>`;
@@ -951,6 +951,15 @@
       notificationSound.play().catch(error => {
         log(`Error playing notification sound: ${error.message}`);
       });
+    }
+
+    async function checkServerStatus() {
+      try {
+        const response = await fetch(`${BACKEND_URL}/`, { method: 'HEAD', timeout: 3000 });
+        return response.ok;
+      } catch {
+        return false;
+      }
     }
 
     async function loadWebhooks() {
@@ -1020,7 +1029,15 @@
       log('Theme changed to: ' + theme);
     }
 
-    function showAddWebhookModal() {
+    async function showAddWebhookModal() {
+      const serverOnline = await checkServerStatus();
+      if (!serverOnline) {
+        const modalStatus = document.getElementById('modalStatus');
+        modalStatus.textContent = '❌ Server is not running. Please start the server to add a webhook.';
+        modalStatus.classList.add('error');
+        log('Cannot open Add Webhook modal: Server is not running.');
+        return;
+      }
       document.getElementById('addWebhookModal').style.display = 'flex';
       document.getElementById('webhookUrlInput').value = '';
       document.getElementById('modalStatus').textContent = '';
@@ -1121,9 +1138,15 @@
         log('Webhook added: ' + webhook.name);
         setTimeout(hideAddWebhookModal, 1000);
       } catch (error) {
-        modalStatus.textContent = `❌ Error adding webhook: ${error.message}`;
-        modalStatus.classList.add('error');
-        log(`Error adding webhook: ${error.message} - URL: ${url}`);
+        if (error.message.includes('Failed to fetch')) {
+          modalStatus.textContent = '❌ Server is not running. Please start the server and try again.';
+          modalStatus.classList.add('error');
+          log('Server is not running. Cannot add webhook.');
+        } else {
+          modalStatus.textContent = `❌ Error adding webhook: ${error.message}`;
+          modalStatus.classList.add('error');
+          log(`Error adding webhook: ${error.message} - URL: ${url}`);
+        }
       }
     }
 
@@ -1663,8 +1686,16 @@
       log('Header updated: ' + header.textContent);
     }
 
-    loadWebhooks();
-    loadTheme();
+    (async () => {
+      const serverOnline = await checkServerStatus();
+      if (!serverOnline) {
+        document.body.innerHTML = '<h1 style="text-align: center; margin-top: 50px;">Server is not running. Please start the server and refresh the page.</h1>';
+        log('Server is not running. Page functionality disabled.');
+        throw new Error('Server not running');
+      }
+      loadWebhooks();
+      loadTheme();
+    })();
   </script>
 </body>
 </html>
