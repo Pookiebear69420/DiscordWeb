@@ -10,6 +10,9 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
+app.set('trust proxy', 1); // trust first proxy
+
+
 // Use dynamic import for node-fetch
 let fetch;
 (async () => {
